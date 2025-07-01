@@ -1,6 +1,10 @@
 #![deny(clippy::all)]
 
 fn main() {
+    day_one();
+}
+
+fn day_one() {
     let mut name: &str = "Foo"; // string slice type
     println!("Initial name: {name}!");
     name = "John";
