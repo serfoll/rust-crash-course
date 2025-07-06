@@ -1,5 +1,3 @@
-#![deny(clippy::all)]
-
 fn say_hello_world() -> String {
     String::from("Hello, world!")
 }
