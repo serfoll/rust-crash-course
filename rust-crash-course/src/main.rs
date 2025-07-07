@@ -1,44 +1,79 @@
 #![deny(clippy::all)]
 
-fn say_hello_world() -> String {
-    String::from("Hello, world!")
+// simple stuct
+#[derive(Debug)]
+struct Person {
+    name: String,
+    age: u8,
+    family_name: String,
 }
 
-fn say_hello_to() -> String {
-    let to = "world".to_string();
-    format!("Hello, {to}!") // uses litterals {} to format strring 
+impl Person {
+    fn describe(&self) {
+        println!("Person: {} {}, {}", self.name, self.family_name, self.age);
+    }
 }
 
-fn greet(name: String) {
-    println!("Hello, {name}!");
+// Debug trait
+#[derive(Debug)]
+// tuple
+struct Point(f64, f64, f64);
+
+// implementation block
+impl Point {
+    // does not mutate
+    fn describe(&self) {
+        println!("Point is at ({}, {}, {})", self.0, self.1, self.2);
+    }
+
+    fn zero() -> Point {
+        Point(0.0, 0.0, 0.0)
+    }
 }
 
-fn add_one(x: i32, y: i32) -> i32 {
-    x + y
+impl Point {
+    // does mutate the instance
+    fn make_twice(&mut self) {
+        self.0 *= 2.0;
+        self.1 *= 2.0;
+        self.2 *= 2.0;
+    }
+
+    // does not mutate and returns a new Point
+    fn twice(&self) -> Point {
+        Point(self.0 * 2.0, self.1 * 2.0, self.2 * 2.0)
+    }
 }
 
 fn main() {
-    let gretting = say_hello_world();
-    println!("{gretting}");
+    let person: Person = Person {
+        name: "John".to_string(),
+        age: 30,
+        family_name: "Doe".to_string(),
+    };
 
-    let hello = say_hello_to();
-    println!("{hello}");
+    person.describe();
 
-    let x = 10;
-    let y = 12;
-    let sum = add_one(x, y);
-    println!("{x} + {y} = {sum}");
+    println!("person 1: {person:?}");
 
-    let name = "John".to_string();
-    greet(name);
+    let person2: Person = Person {
+        name: "Jane".to_string(),
+        ..person
+    };
 
-    // inline function
-    let times_two = |value: i32| value * 2;
-    let result = times_two(2);
-    println! {"2 x 2 = {result}"};
+    println!(
+        "{} {} is {} years old.",
+        person2.name, person2.family_name, person2.age
+    );
 
-    // function pointers
-    let ptr = times_two;
-    let res = ptr(4);
-    println!("4 x 2 = {res}");
+    // tuples
+    let mut points = Point(1.0, 2.0, 3.0);
+    points.describe();
+
+    points.make_twice();
+    points.describe();
+    println!("points = {points:?}");
+
+    let point1 = Point::zero();
+    println!("point = {point1:?}");
 }
